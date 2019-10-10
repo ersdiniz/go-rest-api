@@ -23,15 +23,27 @@ func NewRoute() *Route {
 }
 
 func (route *Route) BuildRoutes(router *gin.RouterGroup) {
-	group := router.Group("/v1/companies")
+	v1 := router.Group("/v1")
 	{
-		group.GET("", route.Get)
-		group.GET("/:id", route.GetUnique)
-		group.POST("", route.Insert)
-		group.DELETE("/:id", route.Delete)
+		group := v1.Group("/companies")
+		{
+			group.GET("", route.Get)
+			group.GET("/:id", route.GetUnique)
+			group.POST("", route.Insert)
+			group.DELETE("/:id", route.Delete)
+		}
 	}
 }
 
+// @Summary Show a list of Companies
+// @Description Get a list of Companies
+// @Accept  json
+// @Produce  json
+// @Param name query string false "the name or part of name"
+// @Param zip query string false "the address zip of company"
+// @Success 200 {object} model.Companies
+// @Failure 204 {string} string "No content"
+// @Router /companies [get]
 func (route *Route) Get(c *gin.Context) {
 	name := c.Query("name")
 	zip := c.Query("zip")
@@ -55,6 +67,14 @@ func (route *Route) Get(c *gin.Context) {
 	}
 }
 
+// @Summary Show a Company
+// @Description Get a Company
+// @Accept  json
+// @Produce  json
+// @Param id path string true "Identifier of company"
+// @Success 200 {object} model.Company
+// @Failure 204 {string} string "No content"
+// @Router /companies/{id} [get]
 func (route *Route) GetUnique(c *gin.Context) {
 	id := c.Param("id")
 
@@ -72,6 +92,16 @@ func (route *Route) GetUnique(c *gin.Context) {
 	}
 }
 
+type CSV struct {}
+
+// @Summary Insert Companies by file
+// @Description Post Companies
+// @Accept  mpfd
+// @Produce  json
+// @Param file formData string true "CSV file with companies"
+// @Success 200 {object} model.Company
+// @Failure 422 {string} string "Unprocessable"
+// @Router /companies [post]
 func (route *Route) Insert(c *gin.Context) {
 	formFile, header, err := c.Request.FormFile("file")
 	if err != nil {
@@ -99,6 +129,14 @@ func (route *Route) Insert(c *gin.Context) {
 	}
 }
 
+// @Summary Remove a Company
+// @Description Delete a Company
+// @Accept  json
+// @Produce  json
+// @Param id path string true "Identifier of company"
+// @Success 200 {object} model.Company
+// @Failure 422 {string} string "Unprocessable company"
+// @Router /companies/{id} [delete]
 func (route *Route) Delete(c *gin.Context) {
 	id := c.Param("id")
 

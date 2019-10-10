@@ -1,0 +1,101 @@
+definitions:
+  model.Companies:
+    items:
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        website:
+          type: string
+        zip:
+          type: string
+      type: object
+    type: array
+  model.Company:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      website:
+        type: string
+      zip:
+        type: string
+    type: object
+info:
+  contact: {}
+  license: {}
+paths:
+  /companies:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of Companies
+      parameters:
+      - description: the name or part of name
+        in: query
+        name: name
+        type: string
+      - description: the address zip of company
+        in: query
+        name: zip
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Companies'
+        "204":
+          description: No content
+          schema:
+            type: string
+      summary: Show a list of Companies
+    post:
+      consumes:
+      - multipart/form-data
+      description: Post companies
+      parameters:
+      - description: CSV file with companies
+        in: formData
+        name: file
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Company'
+        "204":
+          description: No content
+          schema:
+            type: string
+      summary: Insert companies by file
+  /companies/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get a Company
+      parameters:
+      - description: Identifier of company
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Company'
+        "204":
+          description: No content
+          schema:
+            type: string
+      summary: Show a Company
+swagger: "2.0"

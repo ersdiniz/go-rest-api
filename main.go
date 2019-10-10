@@ -2,6 +2,7 @@ package main
 
 import (
 	"go-rest-api/app"
+	"go-rest-api/env"
 	"go-rest-api/model"
 	"log"
 )
@@ -21,7 +22,7 @@ func main() {
 
 	log.Println(":: Aplicação pronta!!! ::")
 
-	err := engine.Run(":8082")
+	err := engine.Run(":" + env.SystemPort())
 	if err != nil {
 		panic(err)
 	}

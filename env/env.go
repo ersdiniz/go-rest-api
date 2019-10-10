@@ -6,6 +6,7 @@ import (
 )
 
 var properties = []*EnvProperty{
+	{Key: "SYSTEM_PORT", FallBackValue: "8082"},
 	{Key: "DATABASE_HOST", FallBackValue: "go-mongo"},
 	{Key: "DATABASE_PORT", FallBackValue: "27017"},
 	{Key: "FILE_SOURCE", FallBackValue: "q1_catalog.csv"},
@@ -26,6 +27,10 @@ func envProperties() *EnvProperties {
 	objProperties := &EnvProperties{}
 	objProperties.Properties = properties
 	return objProperties
+}
+
+func SystemPort() string {
+	return envProperties().envString("SYSTEM_PORT")
 }
 
 func DatabaseHost() string {

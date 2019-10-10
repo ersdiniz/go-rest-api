@@ -5,9 +5,7 @@ import (
 	"go-rest-api/env"
 )
 
-const (
-	DATABASE = "dinizDB"
-)
+const DATABASE = "dinizDB"
 
 func Connect() *mgo.Session {
 	session, err := mgo.Dial(env.DatabaseHost() + ":" + env.DatabasePort())
