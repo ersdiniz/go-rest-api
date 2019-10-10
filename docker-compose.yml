@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  mongo:
+    image: 'mongo:3.4.1'
+    container_name: 'go-mongo'
+    ports:
+      - "27117:27017"
+
+  go-api:
+    build: .
+    restart: always
+    container_name: 'go-api'
+    ports:
+      - 8082:8082
+    depends_on:
+      - mongo
